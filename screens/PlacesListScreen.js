@@ -4,7 +4,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/CustomHeaderButton";
 
-const PlacesListScreen = () => {
+const PlacesListScreen = (props) => {
   return (
     <View>
       <Text>PlacesListScreen</Text>

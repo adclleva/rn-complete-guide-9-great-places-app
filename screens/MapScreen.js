@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const MapScreen = () => {
+const MapScreen = (props) => {
   return (
     <View>
       <Text>MapScreen</Text>
