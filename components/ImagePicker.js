@@ -56,6 +56,9 @@ const ImgPicker = (props) => {
     }
      */
     setPickedImage(image.uri);
+
+    // this wil forward the image to the parent component
+    props.onImageTaken(image.uri);
   };
 
   return (
@@ -82,6 +85,7 @@ export default ImgPicker;
 const styles = StyleSheet.create({
   imagePicker: {
     alignItems: "center",
+    marginBottom: 15,
   },
   imagePreview: {
     width: "100%",
