@@ -10,7 +10,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_PLACE:
       const newPlace = new Place(
-        new Date().toString(),
+        // converted the number to a string
+        action.placeData.id.toString(),
         action.placeData.title,
         action.placeData.image
       );

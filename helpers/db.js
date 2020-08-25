@@ -41,3 +41,26 @@ export const init = () => {
   // we return this promise depending if the function passes or not
   return promise;
 };
+
+export const insertPlace = (title, imageUri, address, latitude, longitude) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        /**
+         * we can use string interpolation but it would leave it vulnerable to sql injection attacks
+         */
+        "INSERT INTO places (title, imageUri, address, latitude, longitude) VALUES (?, ?, ?, ?, ?);",
+        // passing the values into will allow some protection and
+        [title, imageUri, address, latitude, longitude],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+
+  return promise;
+};

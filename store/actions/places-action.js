@@ -1,4 +1,5 @@
 import * as FileSystem from "expo-file-system";
+import { insertPlace } from "../../helpers/db";
 
 export const ADD_PLACE = "ADD_PLACE";
 
@@ -22,6 +23,24 @@ export const addPlace = (title, image) => {
         from: image,
         to: newPath,
       });
+      // we will try to insert to the database
+      const dbResult = await insertPlace(
+        title,
+        newPath,
+        "Dummy Address",
+        15.6,
+        12.3
+      );
+      /** what dbResult looks like
+        dbResult WebSQLResultSet {
+          "insertId": 1,
+          "rows": WebSQLRows {
+            "_array": Array [],
+            "length": 0,
+          },
+          "rowsAffected": 1,
+        }
+       */
     } catch (error) {
       console.log(error);
       throw error;
@@ -31,6 +50,7 @@ export const addPlace = (title, image) => {
     dispatch({
       type: ADD_PLACE,
       placeData: {
+        id: dbResult.insertId, // this will be a number but we can convert it to a string
         title: title,
         image: newPath,
       },
