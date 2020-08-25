@@ -27,6 +27,7 @@ export const addPlace = (title, image) => {
       throw error;
     }
 
+    // we will use the newPath from the FileSystem expo library
     dispatch({
       type: ADD_PLACE,
       placeData: {
