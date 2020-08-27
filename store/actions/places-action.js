@@ -1,7 +1,10 @@
 import * as FileSystem from "expo-file-system";
-import { insertPlace } from "../../helpers/db";
+
+// these methods are utilizing
+import { insertPlace, fetchPlaces } from "../../helpers/db";
 
 export const ADD_PLACE = "ADD_PLACE";
+export const SET_PLACES = "SET_PLACES"; // to fetch the places to he server
 
 export const addPlace = (title, image) => {
   return async (dispatch) => {
@@ -55,5 +58,35 @@ export const addPlace = (title, image) => {
         image: newPath,
       },
     });
+  };
+};
+
+export const loadPlaces = () => {
+  return async (dispatch) => {
+    try {
+      const dbResult = await fetchPlaces();
+      /** what dbResult looks like
+       * dbResult WebSQLResultSet {
+          "insertId": undefined,
+          "rows": WebSQLRows {
+            "_array": Array [
+              Object {
+                "address": "Dummy Address",
+                "id": 1,
+                "imageUri": "file:///data/user/0/host.exp.exponent/files/ExperienceData/%2540anonymous%252Frn-complete-guide-9-great-places-app-dc04d009-93dd-4b88-bf90-80cd7c722fb2/9d21fa31-9b1b-4cf1-a43d-cb3106d6e62f.jpg",
+                "latitude": 15.6,
+                "longitude": 12.3,
+                "title": "First Test",
+              },
+            ],
+            "length": 1,
+          },
+          "rowsAffected": 0,
+        }
+       */
+      dispatch({ type: SET_PLACES, places: dbResult.rows._array });
+    } catch (error) {
+      throw error;
+    }
   };
 };

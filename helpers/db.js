@@ -64,3 +64,26 @@ export const insertPlace = (title, imageUri, address, latitude, longitude) => {
 
   return promise;
 };
+
+export const fetchPlaces = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        /**
+         * we are going to do a query that will get the places data from the database
+         */
+        "SELECT * FROM places",
+        // passing the values into will allow some protection and
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+
+  return promise;
+};
