@@ -6,6 +6,7 @@ import { TextInput, ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import * as placesActions from "../store/actions/places-action";
 import ImagePicker from "../components/ImagePicker";
+import LocationPicker from "../components/LocationPicker";
 
 const NewPlaceScreen = (props) => {
   const [titleValue, setTitleValue] = useState("");
@@ -37,6 +38,7 @@ const NewPlaceScreen = (props) => {
           value={titleValue}
         />
         <ImagePicker onImageTaken={imageTakenHandler} />
+        <LocationPicker />
         <Button
           title="Save Place"
           color={Colors.primary}

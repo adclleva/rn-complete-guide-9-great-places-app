@@ -47,13 +47,13 @@ const ImgPicker = (props) => {
     });
     /**
      * this is an example of what returns from the camera data image  
-    {
-      "cancelled": false,
-      "height": 540,
-      "type": "image",
-      "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Frn-complete-guide-9-great-places-app-dc04d009-93dd-4b88-bf90-80cd7c722fb2/ImagePicker/05dadef4-73bd-445a-b6c6-841b6d38e6e3.jpg",
-      "width": 960,
-    }
+      {
+        "cancelled": false,
+        "height": 540,
+        "type": "image",
+        "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Frn-complete-guide-9-great-places-app-dc04d009-93dd-4b88-bf90-80cd7c722fb2/ImagePicker/05dadef4-73bd-445a-b6c6-841b6d38e6e3.jpg",
+        "width": 960,
+      }
      */
     setPickedImage(image.uri);
 
