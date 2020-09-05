@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 
 import ENV from "../env";
 
 const MapPreview = (props) => {
-  const { location, style } = props;
+  const { location, style, onPress } = props;
   console.log("location prop", location);
 
   let imagePreviewUrl;
@@ -15,13 +15,16 @@ const MapPreview = (props) => {
   }
 
   return (
-    <View style={{ ...styles.mapPreview, ...style }}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={{ ...styles.mapPreview, ...style }}
+    >
       {location ? (
         <Image style={styles.mapImage} source={{ uri: imagePreviewUrl }} />
       ) : (
         props.children
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
