@@ -15,6 +15,7 @@ import Colors from "../constants/Colors";
 import MapPreview from "./MapPreview";
 
 const LocationPicker = (props) => {
+  const { onLocationPicked } = props;
   const [pickedLocation, setPickedLocation] = useState();
   const [isFetching, setIsFetching] = useState(false);
 
@@ -24,8 +25,11 @@ const LocationPicker = (props) => {
   useEffect(() => {
     if (mapPickedLocation) {
       setPickedLocation(mapPickedLocation);
+
+      // this will send the picked coordinates back to the parent component
+      onLocationPicked(mapPickedLocation);
     }
-  }, [mapPickedLocation]);
+  }, [mapPickedLocation, onLocationPicked]);
 
   /**
    * we make sure to check the permissions to enable the location
@@ -80,8 +84,14 @@ const LocationPicker = (props) => {
         "timestamp": 1598832910903.9941,
       }
        */
-      console.log("location", location);
+
       setPickedLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      // this will forward the current location coordinates back to the parent component
+      onLocationPicked({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });

@@ -6,6 +6,7 @@ import * as Permissions from "expo-permissions";
 
 // renamed to ImgPicker to avoid name clashing from the xpo library
 const ImgPicker = (props) => {
+  const { onImageTaken } = props;
   const [pickedImage, setPickedImage] = useState();
   /**
    * we need to make sure to enable permissions for the camera and we utilized the
@@ -58,7 +59,7 @@ const ImgPicker = (props) => {
     setPickedImage(image.uri);
 
     // this wil forward the image to the parent component
-    props.onImageTaken(image.uri);
+    onImageTaken(image.uri);
   };
 
   return (
