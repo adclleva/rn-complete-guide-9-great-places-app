@@ -1,6 +1,14 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+  Alert,
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import Colors from "../constants/Colors";
 
 const MapScreen = (props) => {
   const [selectedLocation, setSelectedLocation] = useState();
@@ -17,6 +25,24 @@ const MapScreen = (props) => {
     longitudeDelta: 0.0421,
   };
 
+  /**
+   * we need to pass this function to the navigation options of this component
+   * by utilizing the useEffect and useCallback pattern to avoid the infinite rendering loop
+   * here we will go back to the NewPlace screen and pass params down to the screen to save the pickedLocation
+   */
+  const savePickedLocationHandler = useCallback(() => {
+    if (!selectedLocation) {
+      Alert.alert("Location has not been selected", "Please select a location");
+      return;
+    }
+    props.navigation.navigate("NewPlace", { pickedLocation: selectedLocation });
+  }, [selectedLocation]);
+
+  // this will pass the function down to the navigationOptions on this component
+  useEffect(() => {
+    props.navigation.setParams({ saveLocation: savePickedLocationHandler });
+  }, [savePickedLocationHandler]);
+
   const selectLocationHandler = (event) => {
     // this is what we get from the event that comes from the onPress of MapView
     setSelectedLocation({
@@ -26,7 +52,6 @@ const MapScreen = (props) => {
   };
 
   // we created the markerCoordinates to check and conditionally render the marker
-
   let markerCoordinates;
 
   if (selectedLocation) {
@@ -51,10 +76,29 @@ const MapScreen = (props) => {
   );
 };
 
-export default MapScreen;
+MapScreen.navigationOptions = (navData) => {
+  const saveFunction = navData.navigation.getParam("saveLocation");
+
+  return {
+    headerRight: (
+      <TouchableOpacity style={styles.headerButton} onPress={saveFunction}>
+        <Text style={styles.headerButtonText}>Save</Text>
+      </TouchableOpacity>
+    ),
+  };
+};
 
 const styles = StyleSheet.create({
   map: {
     flex: 1,
   },
+  headerButton: {
+    marginHorizontal: 20,
+  },
+  headerButtonText: {
+    fontSize: 16,
+    color: Platform.OS === "android" ? "white" : Colors.primary,
+  },
 });
+
+export default MapScreen;
