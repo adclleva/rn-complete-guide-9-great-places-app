@@ -5,7 +5,6 @@ import ENV from "../env";
 
 const MapPreview = (props) => {
   const { location, style, onPress } = props;
-  console.log("location prop", location);
 
   let imagePreviewUrl;
 
