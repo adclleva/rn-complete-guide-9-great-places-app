@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,15 @@ import MapPreview from "./MapPreview";
 const LocationPicker = (props) => {
   const [pickedLocation, setPickedLocation] = useState();
   const [isFetching, setIsFetching] = useState(false);
+
+  const mapPickedLocation = props.navigation.getParam("pickedLocation");
+
+  // this is an elegant way of getting the picked location from the map to our state
+  useEffect(() => {
+    if (mapPickedLocation) {
+      setPickedLocation(mapPickedLocation);
+    }
+  }, [mapPickedLocation]);
 
   /**
    * we make sure to check the permissions to enable the location
