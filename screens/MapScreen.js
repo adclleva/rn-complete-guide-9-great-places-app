@@ -11,16 +11,21 @@ import MapView, { Marker } from "react-native-maps";
 import Colors from "../constants/Colors";
 
 const MapScreen = (props) => {
-  const [selectedLocation, setSelectedLocation] = useState();
+  const initialLocation = props.navigation.getParam("initialLocation");
+  const readOnly = props.navigation.getParam("readOnly");
+
+  // the initialLocation would be the default state for selectedLocation so it could be undefined
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation);
   /**
    * the Delta's show how much space we have with the longitude and latitude surface
    * this is what we need for the region prop of the MapView
    * it's also important to add a style to the MapView component
+   * we also set the initial region c
    */
 
   const mapRegion = {
-    latitude: 37.8,
-    longitude: -122.43,
+    latitude: initialLocation ? initialLocation.latitude : 37.8,
+    longitude: initialLocation ? initialLocation.longitude : -122.43,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
@@ -44,6 +49,11 @@ const MapScreen = (props) => {
   }, [savePickedLocationHandler]);
 
   const selectLocationHandler = (event) => {
+    // picking a location is disabled when it's read only
+    if (readOnly) {
+      return;
+    }
+
     // this is what we get from the event that comes from the onPress of MapView
     setSelectedLocation({
       latitude: event.nativeEvent.coordinate.latitude,
@@ -78,6 +88,12 @@ const MapScreen = (props) => {
 
 MapScreen.navigationOptions = (navData) => {
   const saveFunction = navData.navigation.getParam("saveLocation");
+  const readOnly = navData.navigation.getParam("readOnly");
+
+  // we return an empty object for the configuration
+  if (readOnly) {
+    return {};
+  }
 
   return {
     headerRight: (
