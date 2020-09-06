@@ -65,25 +65,26 @@ export const addPlace = (title, image, location) => {
           "rowsAffected": 1,
         }
        */
+
+      dispatch({
+        type: ADD_PLACE,
+        placeData: {
+          id: dbResult.insertId, // this will be a number but we can convert it to a string
+          title: title,
+          image: newPath,
+          address: address,
+          coordinates: {
+            latitude: location.latitude,
+            longitude: location.longitude,
+          },
+        },
+      });
     } catch (error) {
-      console.log(error);
+      console.log("Error", error);
       throw error;
     }
 
     // we will use the newPath from the FileSystem expo library
-    dispatch({
-      type: ADD_PLACE,
-      placeData: {
-        id: dbResult.insertId, // this will be a number but we can convert it to a string
-        title: title,
-        image: newPath,
-        address: address,
-        coordinates: {
-          latitude: location.latitude,
-          longitude: location.longitude,
-        },
-      },
-    });
   };
 };
 

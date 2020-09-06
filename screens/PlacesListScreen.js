@@ -28,7 +28,7 @@ const PlacesListScreen = (props) => {
               placeId: itemData.item.id,
             });
           }}
-          address={null}
+          address={itemData.item.address}
           title={itemData.item.title}
         />
       )}

@@ -14,7 +14,7 @@ init()
   })
   .catch((error) => {
     console.log("Initializing db failed.");
-    console.log("error");
+    console.log("Error", error);
   });
 
 // this will combine the reducers together
