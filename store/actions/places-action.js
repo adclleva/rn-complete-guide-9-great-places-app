@@ -2,12 +2,33 @@ import * as FileSystem from "expo-file-system";
 
 // these methods are utilizing
 import { insertPlace, fetchPlaces } from "../../helpers/db";
+import ENV from "../../env";
 
 export const ADD_PLACE = "ADD_PLACE";
 export const SET_PLACES = "SET_PLACES"; // to fetch the places to he server
 
-export const addPlace = (title, image) => {
+export const addPlace = (title, image, location) => {
   return async (dispatch) => {
+    // this sends a get request
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${ENV.googleApiKey}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+
+    const responseData = await response.json();
+
+    if (!responseData.results) {
+      throw new Error("Something went wrong!");
+    }
+
+    /** we can look here for reference: https://developers.google.com/maps/documentation/geocoding/start#reverse
+     * we get this address from the response of the Geocoding API for Reverse geocoding
+     */
+    const address = responseData.results[0].formatted_address;
+
     // image is the temporary file name and will get the file name
     const fileName = image.split("/").pop();
 
@@ -30,9 +51,9 @@ export const addPlace = (title, image) => {
       const dbResult = await insertPlace(
         title,
         newPath,
-        "Dummy Address",
-        15.6,
-        12.3
+        address,
+        location.latitude,
+        location.longitude
       );
       /** what dbResult looks like
         dbResult WebSQLResultSet {
@@ -56,6 +77,11 @@ export const addPlace = (title, image) => {
         id: dbResult.insertId, // this will be a number but we can convert it to a string
         title: title,
         image: newPath,
+        address: address,
+        coordinates: {
+          latitude: location.latitude,
+          longitude: location.longitude,
+        },
       },
     });
   };

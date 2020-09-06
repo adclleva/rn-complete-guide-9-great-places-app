@@ -12,7 +12,15 @@ export default (state = initialState, action) => {
       return {
         // this is coming sql
         places: action.places.map(
-          (place) => new Place(place.id.toString(), place.title, place.imageUri)
+          (place) =>
+            new Place(
+              place.id.toString(),
+              place.title,
+              place.imageUri,
+              place.address,
+              place.latitude,
+              place.longitude
+            )
         ),
       };
     case ADD_PLACE:
@@ -20,7 +28,10 @@ export default (state = initialState, action) => {
         // converted the number to a string
         action.placeData.id.toString(),
         action.placeData.title,
-        action.placeData.image
+        action.placeData.image,
+        action.placeData.address,
+        action.placeData.coordinates.latitude,
+        action.placeData.coordinates.longitude
       );
 
       return {
